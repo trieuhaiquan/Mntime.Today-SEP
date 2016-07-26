@@ -156,6 +156,16 @@ class Controller_index {
     }
 
  // nhuan here
+    function xoatime() {
+        if (isset($_SESSION['login_id'])) {
+            $idtime = $this->params[0];
+            $iduser = $_SESSION['login_id'];
+            $xoatime = $this->time->xoatime($idtime, $iduser);
+            header('location:' . BASE_URL . "index/managetime");
+        }
+        header('location:' . BASE_URL . "index/managetime");
+    }
+    
 
     function fixtime() {
         if (isset($_SESSION['login_id'])) {

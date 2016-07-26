@@ -73,7 +73,11 @@ class Model_mindex {
     }
 
  // nhuan here
-
+    public function xoatime($idtime, $iduser) {
+        $sql = "delete from managetime where id='$idtime' and iduser = $iduser";
+        if (!$rs = $this->db->query($sql))
+            die($this->db->error);
+    }
     public function fixtime($idtag, $timestart, $timeend, $priority, $timestart2, $timeend2, $idtime, $totalestimate, $iduser) {
         $sql = "UPDATE managetime SET idtag='$idtag' , timestart = '$timestart', timestart2='$timestart', timeend ='$timeend',timeend2='$timeend', priority='$priority',totalestimate='$totalestimate'  WHERE id='$idtime' and iduser=$iduser";
         if (!$rs = $this->db->query($sql))
