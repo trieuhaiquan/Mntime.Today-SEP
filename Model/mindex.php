@@ -132,7 +132,14 @@ class Model_mindex {
         if (!$rs = $this->db->query($sql))
             die($this->db->error);
     }
-
+    public function checkemail($email) {
+        $data = array();
+        $sql = "select count(email) as email from user where `email`='$email'";
+        $rs = $this->db->query($sql) or die($this->db->error);
+        $row = $rs->fetch_row();
+        $dem = $row[0];
+        return $dem;
+    }
     public function login($email, $pass) {
         $data = array();
         $sql = "select id,email,pass,name from user where email ='$email' and pass='$pass'";

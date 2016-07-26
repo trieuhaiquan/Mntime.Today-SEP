@@ -322,19 +322,27 @@ class Controller_index {
         }
     }
     
-
-
-    
-
     function register() {
      
             if (isset($_POST['submit'])) {
+                
                 $name = $_POST['name'];
                 $email = $_POST['email'];
                 $pass1 = $_POST['pass1'];
                 $pass2 = $_POST['pass2'];
-                if ($pass1 != $pass2) {
-                    $errregis = 'Password Confirm wrong';
+                
+                $checkemail = $this->time->checkemail($email);
+                echo $checkemail;
+              
+                if($checkemail == 1)
+                {
+                    $errregis = '<p class="sub-title text-center"><i class="fa fa-exclamation-triangle" aria-hidden="true" style="color:red; font-weight: bolder;"> This Email Was Existed</i></p>';
+                    $_SESSION['errregis'] = $errregis;
+                    header('location:' . BASE_URL);
+
+                }
+                elseif ($pass1 != $pass2) {
+                    $errregis = '<p class="sub-title text-center"><i class="fa fa-exclamation-triangle" aria-hidden="true" style="color:red; font-weight: bolder;"> Password Confirm Wrong !!!</i></p>';
                     $_SESSION['errregis'] = $errregis;
                     header('location:' . BASE_URL);
                 } else {
