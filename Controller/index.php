@@ -41,7 +41,7 @@ class Controller_index {
 
     function addtags() {
         if (isset($_SESSION['login_id'])) {
-
+            
             $iduser = $_SESSION['login_id'];
             $tag = $this->time->tag($iduser);
             $sstag = mb_strtolower($_POST['tag']);
@@ -55,12 +55,21 @@ class Controller_index {
                 }
             }
             if (isset($_POST['tag'])) {
-
-                $tag = $_POST['tag'];
                 unset($_SESSION['errtag']);
+                $tag2 = trim($_POST['tag']);
+                if($tag2=="")
+                {
+                    $errtag = "<div class='alert alert-danger'> <strong>Importtant! This Tag Empty</strong></div>";
+                    $_SESSION['errtag'] = $errtag;
+                    header('location:' . BASE_URL . "index/managetag");
+                }
+                else
+                {
+                $tag = $_POST['tag'];
                 $iduser = $_SESSION['login_id'];
                 $addtag = $this->time->addtag($tag, $iduser);
                 header('location:' . BASE_URL . "index/managetag");
+                }
             } else
                 echo'You didnt input name of tag';
         }
@@ -155,7 +164,6 @@ class Controller_index {
         header('location:' . BASE_URL . "index/managetime");
     }
 
- // nhuan here
     function xoatime() {
         if (isset($_SESSION['login_id'])) {
             $idtime = $this->params[0];
@@ -165,7 +173,6 @@ class Controller_index {
         }
         header('location:' . BASE_URL . "index/managetime");
     }
-    
 
     function fixtime() {
         if (isset($_SESSION['login_id'])) {
@@ -277,8 +284,7 @@ class Controller_index {
         require_once 'View/layout-default/trangchu.phtml';
     }
 
-// thanh chi here 
-        function searchreport() {
+    function searchreport() {
         if (isset($_SESSION['login_id'])) {
             if (isset($_POST['submit'])) {
                 $a = strtotime($_POST['start']);
@@ -321,15 +327,15 @@ class Controller_index {
             require_once 'View/layout-default/trangchu.phtml';
         }
     }
-    
+
     function register() {
      
             if (isset($_POST['submit'])) {
                 
-                $name = $_POST['name'];
+                $name = trim($_POST['name']);
                 $email = $_POST['email'];
-                $pass1 = $_POST['pass1'];
-                $pass2 = $_POST['pass2'];
+                $pass1 = trim($_POST['pass1']);
+                $pass2 = trim($_POST['pass2']);
                 
                 $checkemail = $this->time->checkemail($email);
                 echo $checkemail;
@@ -345,7 +351,20 @@ class Controller_index {
                     $errregis = '<p class="sub-title text-center"><i class="fa fa-exclamation-triangle" aria-hidden="true" style="color:red; font-weight: bolder;"> Password Confirm Wrong !!!</i></p>';
                     $_SESSION['errregis'] = $errregis;
                     header('location:' . BASE_URL);
-                } else {
+                } 
+                elseif($pass1=="")
+                {
+                    $errregis = '<p class="sub-title text-center"><i class="fa fa-exclamation-triangle" aria-hidden="true" style="color:red; font-weight: bolder;"> Password must more than 6 character</i></p>';
+                    $_SESSION['errregis'] = $errregis;
+                    header('location:' . BASE_URL);
+                }
+                elseif($name=="")
+                {
+                    $errregis = '<p class="sub-title text-center"><i class="fa fa-exclamation-triangle" aria-hidden="true" style="color:red; font-weight: bolder;"> Name must more than 6 character</i></p>';
+                    $_SESSION['errregis'] = $errregis;
+                    header('location:' . BASE_URL);
+                }
+                else {
 
                     $register = $this->time->register($name, $email, $pass1, $pass2);
                     unset($_SESSION['errregis']);
@@ -356,12 +375,11 @@ class Controller_index {
             }
 
     }
-
     function login() {
 
         if (isset($_POST['submit'])) {
             $email = $_POST['email'];
-            $pass = md5($_POST['pass']);
+            $pass = md5(trim($_POST['pass']));
             $login = $this->time->login($email, $pass);
             if ($login == true) {
                 unset($_SESSION['fail']);
@@ -409,20 +427,30 @@ class Controller_index {
                          $_SESSION['errchange'] = $errchange;
                          header('location:' . BASE_URL . "index/changepass");
                      }
-                     elseif(md5($_POST['passcu']) != $_SESSION['password'])
+                     elseif(md5(trim($_POST['passcu'])) != $_SESSION['password'])
                      {
-                         $errchange = "<div class='alert alert-danger'> <strong>Danger!</strong> Wrong confirm password</div>";
+                         $errchange = "<div class='alert alert-danger'> <strong>Danger!</strong> Wrong old password</div>";
                          $_SESSION['errchange'] = $errchange;
                          header('location:' . BASE_URL . "index/changepass");
                      }
                      else
                      {
-                     $pass1 = md5($_POST['pass1']);
-                     $iduser = $_SESSION['login_id'];
-                     $changepass = $this->time->changepass($pass1,$iduser);
-                     unset($_SESSION['errchange']);
-                     header('location:' . BASE_URL . "index/thanhcong");
-                     
+                        $pass3 = trim($_POST['pass1']);
+                        echo $pass3;
+                     if($pass3=="")
+                     {
+                         $errchange = "<div class='alert alert-danger'> <strong>Danger!</strong> Password must not be empty!!!</div>";
+                         $_SESSION['errchange'] = $errchange;
+                         header('location:' . BASE_URL . "index/changepass");
+                     }
+                     else
+                     {
+                        $pass1 = md5(trim($_POST['pass1']));
+                        $iduser = $_SESSION['login_id'];
+                        $changepass = $this->time->changepass($pass1,$iduser);
+                        unset($_SESSION['errchange']);
+                        header('location:' . BASE_URL . "index/thanhcong");
+                      }
                      }
 
                  

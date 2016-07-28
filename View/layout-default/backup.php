@@ -110,7 +110,7 @@
                             <h2>Reset password My Account</h2>
                             <span>Email: </span>
                             <input type="email" name="email" id="email">
-                            <input type="submit" name="submit"> 
+                            <input type="submit" name="submit" value="Send"> 
                         </form>
       
                         

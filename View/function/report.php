@@ -7,7 +7,7 @@
           
         <span style="font-weight: bolder">Tag: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span> 
         <select name="tag" >
-            <option value=""> </option>
+            <option value="">All</option>
             <?php foreach($tag as $t){?>
             <option value="<?=$t['id']?>"> <?=$t['tentag']?> </option>
             <?php }?>
